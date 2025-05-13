@@ -1,3 +1,18 @@
 public class Key{
 
+  private int keyNum;
+  private boolean collected;
+
+  public Key(int num){
+    keyNum = num;
+    collected = false;
+  }
+
+  public void keyCollect(){
+    collected = true;
+  }
+
+  public int getKeyNum(){
+    return keyNum;
+  }
 }
