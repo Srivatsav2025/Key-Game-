@@ -1,0 +1,20 @@
+
+public class Couch{
+  private ImageIcon image;
+  private boolean isInteractable;
+  
+  public Couch(int x, int y, boolean interactable){
+    super(x,y);
+    this.setSize(100,100);
+
+    isInteractable = interactable;
+
+    image = new ImageIcon(FINISH THIS);
+
+    this.setIcon(image);
+  }
+
+  public boolean getInteractable(){
+    return interactable;
+  }
+}
