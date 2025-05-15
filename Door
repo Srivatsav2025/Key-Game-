@@ -1,18 +1,32 @@
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 
-public class Door {
+public class Door{
     //close and open animation 
     // if number for key and door is the same open the door
-    private int numDoor;
-    private ArrayList<Key> keys;
-    public Door(int numDoor){
-        this.numDoor = numDoor;
-        keys = new ArrayList<>();
+    private ArrayList<Door> numDoor;
+    private ArrayList<Key> key;
+    private ImageIcon icon;
+    private int direction;
+    private int doorNum;
+    public Door(int doorNum){
+        numDoor = new ArrayList<Door>();
+        key = new ArrayList<Key>();
+        this.doorNum = doorNum;
     }
-    public void animation(){
+    public void animation(int doorNumber){
+        
+        
+        for(int i = 0; i < key.size(); i++){
+            if(key.get(i).getKeyNum() == doorNum){
+                
+            }
+        }
+        
 
     }
-    public void number(){
-        
+    public int doorNum(){
+        return doorNum;
     }
 }
+
