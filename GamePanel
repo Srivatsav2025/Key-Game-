@@ -1,3 +1,181 @@
-public class GamePanel{
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+
+/**
+ * This class will house all game objects which are part of the
+ * simulation. You must add several targets which can be
+ * hit by fireballs and removed from the game.
+ */
+
+public class GamePanel extends JPanel implements ActionListener {
+
+    private BufferedImage background;
+    private Player player;
+    
+
+    /**
+     * Construct a game panel and initialize the game
+     */
+    public GamePanel() {
+
+       
+
+
+        this.setLayout(null);
+        player = new Player(100, 100);
+        
+        URL imageURL = getClass().getResource("background.png");
+
+        try {
+            background = ImageIO.read(imageURL);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        this.add(player);
+
+        // Handle key presses. We will set dx/dy for the character
+        this.addKeyListener(new KeyListener() {
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int code = e.getKeyCode();
+                switch (code) {
+                    case KeyEvent.VK_W:
+                    if(player.getY()>=0){
+                        
+                        player.setDy(-5);// moving up
+                        player.setDx(0);// horizontal v Vertical mutually exclusive
+                        player.setDirection(Direction.UP);
+                        break;
+                    }
+                    else{
+                        player.setLocation(player.getX(),0);
+                        player.setDy(0);// moving up
+                        player.setDx(0);// horizontal v Vertical mutually exclusive
+                        player.setDirection(Direction.UP);
+                        break;
+                    }
+                    case KeyEvent.VK_A:
+                    if(player.getX()>0){                    
+                        player.setDy(0);
+                        player.setDx(-5);// moving left
+                        player.setDirection(Direction.LEFT);
+                        break;
+                    }
+                    else{
+                        player.setLocation(0,player.getY());
+                        player.setDy(0);
+                        player.setDx(-5);// moving left
+                        player.setDirection(Direction.LEFT);
+                        break;
+                    }
+                    case KeyEvent.VK_S:
+                    if(player.getY()+player.getHeight()<getHeight()){
+                        
+                        player.setDy(5);// moving down
+                        player.setDx(0);// horizontal v Vertical mutually exclusive
+                        player.setDirection(Direction.DOWN);
+                        break;
+                    }
+                    else{
+                        player.setLocation(player.getX(),getHeight()-player.getHeight());
+                        player.setDy(0);// moving down
+                        player.setDx(0);// horizontal v Vertical mutually exclusive
+                        player.setDirection(Direction.DOWN);
+                        break;
+                    }
+                    case KeyEvent.VK_D:
+                    if (player.getX() + player.getWidth() < getWidth()) {
+                        player.setDy(0);
+                        player.setDx(5);
+                        player.setDirection(Direction.RIGHT);
+                    } else {
+                        player.setLocation(getWidth() - player.getWidth(), player.getY());
+                        player.setDx(0);
+                        
+                    }
+                    break;
+                    case KeyEvent.VK_SPACE:
+                   
+                    }
+                    
+
+
+            }
+             @Override
+            public void keyReleased(KeyEvent e) {
+                int code = e.getKeyCode();
+                switch (code) {
+                    case KeyEvent.VK_W:
+                        player.setDy(0);
+                        player.setIdle();
+                        break;
+                    case KeyEvent.VK_A:
+                        player.setDx(0);
+                        player.setIdle();
+                        break;
+                    case KeyEvent.VK_S:
+                        player.setDy(0);
+                        player.setIdle();
+                        break;
+                    case KeyEvent.VK_D:
+                        player.setDx(0);
+                        player.setIdle();
+                        break;
+                }
+            }
+                
+            
+
+           
+
+        });
+        
+
+        // create and start the game timer. This gamepanel is passed
+        // as the action listener which will be triggered every 17 milliseconds
+        Timer gameLoop = new Timer(17, this);
+        gameLoop.start();
+
+        this.setFocusable(true);
+        this.requestFocusInWindow();
+    }
+
+    // render the gamePanel with the background image
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), this);
+    }
+
+    // The timer will trigger this method every 17 milliseconds.
+    // This is the main game loop and should house the logic for
+    // moving everything on the screen and their interactions.
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        player.update(); // Update Hero's position
+    
+        
+        
+    }
+        
+       
+        
+
 
 }
