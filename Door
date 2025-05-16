@@ -4,17 +4,10 @@ import javax.swing.ImageIcon;
 public class Door{
     //close and open animation 
     // if number for key and door is the same open the door
-    private ArrayList<Door> numDoor;
     private ArrayList<Key> key;
-    private ImageIcon icon;
-    private int direction;
-    private int doorNum;
     private boolean isOpen;
     public Door(int doorNum){
-        numDoor = new ArrayList<Door>();
         key = new ArrayList<Key>();
-        icon = new ImageIcon("ClosedDoor.png");
-        this.doorNum = doorNum;
         isOpen = false;
     }
     public void isOpen(int doorNumber){
@@ -29,7 +22,6 @@ public class Door{
     }
     public void update(){
         this.animation(4);
-        
     }
 }
 
