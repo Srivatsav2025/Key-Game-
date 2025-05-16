@@ -20,6 +20,8 @@ public class GamePanel extends JPanel implements ActionListener {
 
     private BufferedImage background;
     private Player player;
+    private Room currentRoom;
+    private Room bedroom, forest, ocean, desert, snow;
     
 
     /**
@@ -33,14 +35,37 @@ public class GamePanel extends JPanel implements ActionListener {
         this.setLayout(null);
         player = new Player(100, 100);
         
-        URL imageURL = getClass().getResource("background.png");
-
         try {
-            background = ImageIO.read(imageURL);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    BufferedImage bedroomBG = ImageIO.read(getClass().getResource("bedroom.png"));
+    BufferedImage forestBG = ImageIO.read(getClass().getResource("forest.png"));
+    BufferedImage oceanBG = ImageIO.read(getClass().getResource("ocean.png"));
+    BufferedImage desertBG = ImageIO.read(getClass().getResource("desert.png"));
+    BufferedImage snowBG = ImageIO.read(getClass().getResource("snow.png"));
 
+    bedroom = new Room("Bedroom", bedroomBG);
+    forest = new Room("Forest", forestBG);
+    ocean = new Room("Ocean", oceanBG);
+    desert = new Room("Desert", desertBG);
+    snow = new Room("Snow", snowBG);
+
+    // Connect the rooms
+    bedroom.setConnectedRoom(0, forest); // up
+    bedroom.setConnectedRoom(1, ocean);  // right
+    bedroom.setConnectedRoom(2, desert); // down
+    bedroom.setConnectedRoom(3, snow);   // left
+
+    // Optional: Connect other rooms back to bedroom
+    forest.setConnectedRoom(2, bedroom);
+    ocean.setConnectedRoom(3, bedroom);
+    desert.setConnectedRoom(0, bedroom);
+    snow.setConnectedRoom(1, bedroom);
+
+    // Set the starting room
+    currentRoom = bedroom;
+
+} catch (IOException e) {
+    e.printStackTrace();
+}
         this.add(player);
 
         // Handle key presses. We will set dx/dy for the character
@@ -157,25 +182,60 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     // render the gamePanel with the background image
-    @Override
+   @Override
     public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), this);
+    super.paintComponent(g);
+    if (currentRoom != null) 
+    {
+        currentRoom.draw(g, this.getWidth(), this.getHeight());
     }
+    player.paint(g); // paint player on top
+}
 
     // The timer will trigger this method every 17 milliseconds.
     // This is the main game loop and should house the logic for
     // moving everything on the screen and their interactions.
     @Override
-    public void actionPerformed(ActionEvent e) {
-        player.update(); // Update Hero's position
-    
-        
-        
+public void actionPerformed(ActionEvent e) {
+    player.update();
+    if (currentRoom != null) {
+        currentRoom.update();
+        handleRoomSwitch(); // see below
     }
-        
+    repaint();
+}
        
-        
+private void handleRoomSwitch() {
+int px = player.getX();
+int py = player.getY();
+int pw = player.getWidth();
+int ph = player.getHeight();
+int buffer = 10;
+
+    // UP
+    if (py <= 0 && currentRoom.getConnectedRoom(0) != null) {
+        currentRoom = currentRoom.getConnectedRoom(0);
+        player.setLocation(px, this.getHeight() - ph - buffer);
+    }
+
+    // RIGHT
+    else if (px + pw >= this.getWidth() && currentRoom.getConnectedRoom(1) != null) {
+        currentRoom = currentRoom.getConnectedRoom(1);
+        player.setLocation(buffer, py);
+    }
+
+    // DOWN
+    else if (py + ph >= this.getHeight() && currentRoom.getConnectedRoom(2) != null) {
+        currentRoom = currentRoom.getConnectedRoom(2);
+        player.setLocation(px, buffer);
+    }
+
+    // LEFT
+    else if (px <= 0 && currentRoom.getConnectedRoom(3) != null) {
+        currentRoom = currentRoom.getConnectedRoom(3);
+        player.setLocation(this.getWidth() - pw - buffer, py);
+    }
+}     
 
 
 }
