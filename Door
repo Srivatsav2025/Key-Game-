@@ -17,12 +17,12 @@ public class Door{
         this.doorNum = doorNum;
         isOpen = false;
     }
-    public void animation(int doorNumber){
+    public void isOpen(int doorNumber){
         for(int i = 0; i < key.size(); i++){
-            if(key.get(i).getKeyNum() == doorNum){
-                icon = new ImageIcon("OpenDoor.png");
+            if(key.get(i).getKeyNum() != doorNum){
+                isOpen == true;
             }
-        }  
+        }
     }
     public int doorNum(){
         return doorNum;
