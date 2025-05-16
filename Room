@@ -1,0 +1,51 @@
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+public class Room {
+
+    private BufferedImage background;
+    private ArrayList<GameObject> objects;
+    private Room[] connectedRooms; // 0 = up, 1 = right, 2 = down, 3 = left
+    private String name;
+
+    public Room(String name, BufferedImage bg) {
+        this.name = name;
+        this.background = bg;
+        this.objects = new ArrayList<>();
+        this.connectedRooms = new Room[4];
+    }
+
+    public void addObject(GameObject obj) {
+        objects.add(obj);
+    }
+
+    public void setConnectedRoom(int direction, Room room) {
+        connectedRooms[direction] = room;
+    }
+
+    public Room getConnectedRoom(int direction) {
+        return connectedRooms[direction];
+    }
+
+    public void update() {
+        for (GameObject obj : objects) {
+            obj.update();
+        }
+    }
+
+    public void draw(Graphics g, int panelWidth, int panelHeight) {
+        g.drawImage(background, 0, 0, panelWidth, panelHeight, null);
+        for (GameObject obj : objects) {
+            obj.draw(g);
+        }
+    }
+
+    public ArrayList<GameObject> getObjects() {
+        return objects;
+    }
+
+    public String getName() {
+        return name;
+    }
+}
