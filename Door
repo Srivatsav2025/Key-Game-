@@ -9,24 +9,27 @@ public class Door{
     private ImageIcon icon;
     private int direction;
     private int doorNum;
+    private boolean isOpen;
     public Door(int doorNum){
         numDoor = new ArrayList<Door>();
         key = new ArrayList<Key>();
+        icon = new ImageIcon("ClosedDoor.png");
         this.doorNum = doorNum;
+        isOpen = false;
     }
     public void animation(int doorNumber){
-        
-        
         for(int i = 0; i < key.size(); i++){
             if(key.get(i).getKeyNum() == doorNum){
-                
+                icon = new ImageIcon("OpenDoor.png");
             }
-        }
-        
-
+        }  
     }
     public int doorNum(){
         return doorNum;
+    }
+    public void update(){
+        this.animation(4);
+        
     }
 }
 
