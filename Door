@@ -6,11 +6,13 @@ public class Door{
     // if number for key and door is the same open the door
     private ArrayList<Key> key;
     private boolean isOpen;
+    private int doorNumber;
     public Door(int doorNum){
         key = new ArrayList<Key>();
         isOpen = false;
+        this.doorNumber = doorNumber;
     }
-    public void isOpen(int doorNumber){
+    public void isOpen(){
         for(int i = 0; i < key.size(); i++){
             if(key.get(i).getKeyNum() != doorNum){
                 isOpen == true;
@@ -18,7 +20,7 @@ public class Door{
         }
     }
     public int doorNum(){
-        return doorNum;
+        return doorNumber;
     }
     public void update(){
         this.animation(4);
