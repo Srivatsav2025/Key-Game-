@@ -1,14 +1,17 @@
-
 import javax.swing.JFrame;
-public class Animation{
-  public static void main(String[] args){
-    JFrame frame = new JFrame("Trapped");
-    frame.setBounds(50,50,500,500);
 
-    frame.setResizeable(false);
-    GamePanel gamePanel = new GamePanel();
-    frame.add(gamePanel);
-    frame.setVisible(true);
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-  }
+public class Animation {
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Simple Animation");
+
+        frame.setBounds(400, 50, 600, 600);
+
+        GamePanel gamePanel = new GamePanel();
+        frame.add(gamePanel);
+
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    }
 }
