@@ -1,18 +1,38 @@
-public class Key{
+import java.awt.image.BufferedImage;
 
-  private int keyNum;
-  private boolean collected;
+import javax.swing.ImageIcon;
 
-  public Key(int num){
-    keyNum = num;
-    collected = false;
-  }
+public class Key extends GameObject{
 
-  public void keyCollect(){
-    collected = true;
-  }
+    private Player player;
+    private boolean taken = false;
 
-  public int getKeyNum(){
-    return keyNum;
-  }
+    public Key(int x, int y, Player player){
+        super(x, y, true, false);
+        this.setSize(26,22);
+        this.player = player;
+        
+        this.setIcon(new ImageIcon("./sprite images/key.png"));
+    }
+
+    public void update(){
+        if(!taken && this.hasCollidedWith(player)){
+            taken = true;
+            isVisible = false;
+        }
+    }
+
+    public boolean isTaken(){
+        return taken;
+    }
+
+    public void updateVisibility(){
+        isVisible = true;
+    }
+
+    @Override
+    public void interact() {
+       
+    }
+    
 }
