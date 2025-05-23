@@ -1,6 +1,7 @@
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +10,7 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * This class will house all game objects which are part of the
@@ -21,53 +23,25 @@ public class GamePanel extends JPanel implements ActionListener {
     private BufferedImage background;
     private Player player;
     private Room currentRoom;
-    private Room bedroom, forest, ocean, desert, snow;
     
 
     /**
      * Construct a game panel and initialize the game
      */
     public GamePanel() {
-
-       
-
-
         this.setLayout(null);
         player = new Player(100, 100);
-        
+        currentRoom = new Bedroom(player);
+        URL imageURL = getClass().getResource("./background/gray_tile_background.png");
+
         try {
-    BufferedImage bedroomBG = ImageIO.read(getClass().getResource("bedroom.png"));
-    BufferedImage forestBG = ImageIO.read(getClass().getResource("forest.png"));
-    BufferedImage oceanBG = ImageIO.read(getClass().getResource("ocean.png"));
-    BufferedImage desertBG = ImageIO.read(getClass().getResource("desert.png"));
-    BufferedImage snowBG = ImageIO.read(getClass().getResource("snow.png"));
+            background = ImageIO.read(imageURL);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-    bedroom = new Room("Bedroom", bedroomBG);
-    forest = new Room("Forest", forestBG);
-    ocean = new Room("Ocean", oceanBG);
-    desert = new Room("Desert", desertBG);
-    snow = new Room("Snow", snowBG);
-
-    // Connect the rooms
-    bedroom.setConnectedRoom(0, forest); // up
-    bedroom.setConnectedRoom(1, ocean);  // right
-    bedroom.setConnectedRoom(2, desert); // down
-    bedroom.setConnectedRoom(3, snow);   // left
-
-    // Optional: Connect other rooms back to bedroom
-    forest.setConnectedRoom(2, bedroom);
-    ocean.setConnectedRoom(3, bedroom);
-    desert.setConnectedRoom(0, bedroom);
-    snow.setConnectedRoom(1, bedroom);
-
-    // Set the starting room
-    currentRoom = bedroom;
-
-} catch (IOException e) {
-    e.printStackTrace();
-}
         this.add(player);
-
+      
         // Handle key presses. We will set dx/dy for the character
         this.addKeyListener(new KeyListener() {
 
@@ -81,68 +55,70 @@ public class GamePanel extends JPanel implements ActionListener {
                 int code = e.getKeyCode();
                 switch (code) {
                     case KeyEvent.VK_W:
-                    if(player.getY()>=0){
-                        
-                        player.setDy(-5);// moving up
-                        player.setDx(0);// horizontal v Vertical mutually exclusive
-                        player.setDirection(Direction.UP);
+                        if(player.getY()>0){
+                            player.setDy(-5);// moving up
+                            player.setDx(0);// horizontal v Vertical mutually exclusive
+                            player.setDirection(Direction.UP);
+                        }
+                        else{
+                            player.setLocation(player.getX(),0);
+                            player.setDy(0);
+                            player.setDx(0);
+                            player.setDirection(Direction.UP);
+                        }
                         break;
-                    }
-                    else{
-                        player.setLocation(player.getX(),0);
-                        player.setDy(0);// moving up
-                        player.setDx(0);// horizontal v Vertical mutually exclusive
-                        player.setDirection(Direction.UP);
-                        break;
-                    }
                     case KeyEvent.VK_A:
-                    if(player.getX()>0){                    
-                        player.setDy(0);
-                        player.setDx(-5);// moving left
-                        player.setDirection(Direction.LEFT);
+                        if(player.getX()>0){
+                            player.setDy(0);
+                            player.setDx(-5);// moving left
+                            player.setDirection(Direction.LEFT);
+                        }
+                        else{
+                            player.setLocation(0,player.getY());
+                            player.setDy(0);
+                            player.setDx(0);
+                            player.setDirection(Direction.LEFT);
+                        }
                         break;
-                    }
-                    else{
-                        player.setLocation(0,player.getY());
-                        player.setDy(0);
-                        player.setDx(-5);// moving left
-                        player.setDirection(Direction.LEFT);
-                        break;
-                    }
                     case KeyEvent.VK_S:
-                    if(player.getY()+player.getHeight()<getHeight()){
                         
-                        player.setDy(5);// moving down
-                        player.setDx(0);// horizontal v Vertical mutually exclusive
-                        player.setDirection(Direction.DOWN);
+                        if(player.getY()+player.getHeight() < getHeight()){
+                            player.setDy(5);// moving down
+                            player.setDx(0);// horizontal v Vertical mutually exclusive
+                            player.setDirection(Direction.DOWN);
+                        }
+                        else{
+                            player.setLocation(player.getX(),getHeight()-player.getHeight());
+                            player.setDy(0);
+                            player.setDx(0);
+                            player.setDirection(Direction.DOWN);
+                        }
                         break;
-                    }
-                    else{
-                        player.setLocation(player.getX(),getHeight()-player.getHeight());
-                        player.setDy(0);// moving down
-                        player.setDx(0);// horizontal v Vertical mutually exclusive
-                        player.setDirection(Direction.DOWN);
-                        break;
-                    }
                     case KeyEvent.VK_D:
-                    if (player.getX() + player.getWidth() < getWidth()) {
-                        player.setDy(0);
-                        player.setDx(5);
-                        player.setDirection(Direction.RIGHT);
-                    } else {
-                        player.setLocation(getWidth() - player.getWidth(), player.getY());
-                        player.setDx(0);
-                        
-                    }
-                    break;
+                        if(player.getX()+player.getWidth() < getWidth()){
+                            player.setDy(0);// moving up
+                            player.setDx(5);// horizontal v Vertical mutually exclusive
+                            player.setDirection(Direction.RIGHT);
+                        }
+                        else{
+                            player.setLocation(getWidth()-player.getWidth(),player.getY());
+                            player.setDy(0);
+                            player.setDx(0);
+                            player.setDirection(Direction.RIGHT);
+                        }
+                        break;
                     case KeyEvent.VK_SPACE:
-                   
-                    }
-                    
+                        for(GameObject obj : currentRoom.getObjects()){
+                            if(player.hasCollidedWith(obj) && obj.getInteractable()){
+                                spacePressed();
+                            }
+                        }
+                        break;
 
-
+                }
             }
-             @Override
+
+            @Override
             public void keyReleased(KeyEvent e) {
                 int code = e.getKeyCode();
                 switch (code) {
@@ -164,78 +140,58 @@ public class GamePanel extends JPanel implements ActionListener {
                         break;
                 }
             }
-                
-            
-
-           
 
         });
-        
+
+
+     
+
 
         // create and start the game timer. This gamepanel is passed
         // as the action listener which will be triggered every 17 milliseconds
         Timer gameLoop = new Timer(17, this);
         gameLoop.start();
+       
 
         this.setFocusable(true);
         this.requestFocusInWindow();
     }
 
     // render the gamePanel with the background image
-   @Override
+    @Override
     public void paintComponent(Graphics g) {
-    super.paintComponent(g);
-    if (currentRoom != null) 
-    {
-        currentRoom.draw(g, this.getWidth(), this.getHeight());
+        super.paintComponent(g);
+        g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), this);
+
+        
     }
-    player.paint(g); // paint player on top
-}
 
     // The timer will trigger this method every 17 milliseconds.
     // This is the main game loop and should house the logic for
     // moving everything on the screen and their interactions.
     @Override
-public void actionPerformed(ActionEvent e) {
-    player.update();
-    if (currentRoom != null) {
-        currentRoom.update();
-        handleRoomSwitch(); // see below
-    }
-    repaint();
-}
+    public void actionPerformed(ActionEvent e) {
        
-private void handleRoomSwitch() {
-int px = player.getX();
-int py = player.getY();
-int pw = player.getWidth();
-int ph = player.getHeight();
-int buffer = 10;
+        currentRoom.update();
+        
 
-    // UP
-    if (py <= 0 && currentRoom.getConnectedRoom(0) != null) {
-        currentRoom = currentRoom.getConnectedRoom(0);
-        player.setLocation(px, this.getHeight() - ph - buffer);
+                
     }
 
-    // RIGHT
-    else if (px + pw >= this.getWidth() && currentRoom.getConnectedRoom(1) != null) {
-        currentRoom = currentRoom.getConnectedRoom(1);
-        player.setLocation(buffer, py);
+    public void spacePressed(){
+        for(GameObject obj : currentRoom.getObjects()){
+            if(player.hasCollidedWith(obj)){
+                obj.interact();
+            }
+        }
     }
 
-    // DOWN
-    else if (py + ph >= this.getHeight() && currentRoom.getConnectedRoom(2) != null) {
-        currentRoom = currentRoom.getConnectedRoom(2);
-        player.setLocation(px, buffer);
+    public void setCurrentRoom(Room room){
+        currentRoom = room;
     }
-
-    // LEFT
-    else if (px <= 0 && currentRoom.getConnectedRoom(3) != null) {
-        currentRoom = currentRoom.getConnectedRoom(3);
-        player.setLocation(this.getWidth() - pw - buffer, py);
-    }
-}     
-
-
 }
+
+    
+
+
+
