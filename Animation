@@ -3,7 +3,7 @@ import javax.swing.JFrame;
 public class Animation {
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Simple Animation");
+        JFrame frame = new JFrame("Puzzler");
 
         frame.setBounds(400, 50, 600, 600);
 
