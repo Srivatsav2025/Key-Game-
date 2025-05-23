@@ -1,51 +1,32 @@
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.awt.Graphics;
 
-public class Room {
+public abstract class Room {
+    protected ArrayList<GameObject> objects;
+    protected Player player;
 
-    private BufferedImage background;
-    private ArrayList<GameObject> objects;
-    private Room[] connectedRooms; // 0 = up, 1 = right, 2 = down, 3 = left
-    private String name;
-
-    public Room(String name, BufferedImage bg) {
-        this.name = name;
-        this.background = bg;
-        this.objects = new ArrayList<>();
-        this.connectedRooms = new Room[4];
+    public Room(Player player){
+        this.player = player;
+        objects = new ArrayList<GameObject>();
+        loadRoomObjects();
     }
 
-    public void addObject(GameObject obj) {
-        objects.add(obj);
-    }
+    protected abstract void loadRoomObjects();
 
-    public void setConnectedRoom(int direction, Room room) {
-        connectedRooms[direction] = room;
-    }
+    public abstract void update();
 
-    public Room getConnectedRoom(int direction) {
-        return connectedRooms[direction];
-    }
-
-    public void update() {
-        for (GameObject obj : objects) {
-            obj.update();
+    public void render(Graphics g){
+        for(GameObject obj : objects){
+            obj.render(g);
         }
+        player.render(g);
     }
 
-    public void draw(Graphics g, int panelWidth, int panelHeight) {
-        g.drawImage(background, 0, 0, panelWidth, panelHeight, null);
-        for (GameObject obj : objects) {
-            obj.draw(g);
-        }
-    }
-
-    public ArrayList<GameObject> getObjects() {
+    public ArrayList<GameObject> getObjects(){
         return objects;
     }
 
-    public String getName() {
-        return name;
+    public Player getPlayer(){
+        return player;
     }
 }
