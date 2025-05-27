@@ -1,13 +1,16 @@
+import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
 
 public class Door extends GameObject{
     private Key requiredKey;
     private Player player;
     private boolean unlocked;
-
+    private boolean isSolid = true;
+    private Bedroom room;
     public Door(int x, int y, Key key, Player player){
         super(x, y, true, true);
-        this.setSize(32,36);
+        this.setSize(64,64);
         requiredKey = key;
         this.player = player;
         unlocked = false;
@@ -16,24 +19,28 @@ public class Door extends GameObject{
     }
 
     @Override
-    public void update() {
-        if(!unlocked && requiredKey.isTaken() && this.hasCollidedWith(player)){
-            unlocked = true;
-            this.open();
-        }
+    public void update(ArrayList<GameObject> objects) {
+       
     }
 
     public void open(){
-
+        isSolid = false;
+        // this.setIcon();
     }
 
     public boolean isUnlocked(){
         return unlocked;
     }
 
+    public boolean getSolid(){
+        return isSolid;
+    }
+
     @Override
     public void interact() {
-        
+        if(!unlocked && requiredKey.isTaken()){
+            unlocked = true;
+            this.open();
+        }
     }
 }
-
