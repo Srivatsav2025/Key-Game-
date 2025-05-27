@@ -1,0 +1,60 @@
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+
+import javax.imageio.ImageIO;
+
+
+public class Axe extends GameObject{
+    
+    private BufferedImage image;
+
+    /**
+     * Constructs a Wall object at (x,y)
+     * 
+     * @param x x-coordinate
+     * @param y y-coordinate
+     */
+    public Axe(int x, int y, int width, int height) {
+        super(x, y);
+        this.setSize(width, height);
+
+        URL imageURL = getClass().getResource("./images/Sea/Axe.png");
+
+        try {
+            image = ImageIO.read(imageURL);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * renders this object
+     */
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(image, 0, 0, this.getWidth(), this.getHeight(), this);
+    }
+
+    /**
+     * not used for this object as it is immobile
+     */
+    @Override
+    public void update() {
+
+    }
+
+    /**
+     * not used for this object as it is immobile
+     */
+
+     public void checkBounds(int width, int height){
+
+     }
+    
+
+}
+
