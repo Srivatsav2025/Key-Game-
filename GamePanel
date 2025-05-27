@@ -39,9 +39,15 @@ public class GamePanel extends JPanel implements ActionListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         this.add(player);
-      
+        
+        for(GameObject obj : currentRoom.getObjects()){
+            
+            this.add(obj);
+            
+        }
+       
+
         // Handle key presses. We will set dx/dy for the character
         this.addKeyListener(new KeyListener() {
 
@@ -109,8 +115,8 @@ public class GamePanel extends JPanel implements ActionListener {
                         break;
                     case KeyEvent.VK_SPACE:
                         for(GameObject obj : currentRoom.getObjects()){
-                            if(player.hasCollidedWith(obj) && obj.getInteractable()){
-                                spacePressed();
+                            if(player.isNear(obj,100) && obj.getInteractable()){
+                                spacePressed(obj);
                             }
                         }
                         break;
@@ -173,17 +179,18 @@ public class GamePanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
        
         currentRoom.update();
+        player.update(currentRoom.getObjects());
         
+        if(currentRoom.getKey().isTaken() == true){
+            this.remove(currentRoom.removeKey());
+        }
 
                 
     }
 
-    public void spacePressed(){
-        for(GameObject obj : currentRoom.getObjects()){
-            if(player.hasCollidedWith(obj)){
-                obj.interact();
-            }
-        }
+    public void spacePressed(GameObject obj){
+        System.out.println("pressed");
+        obj.interact();
     }
 
     public void setCurrentRoom(Room room){
