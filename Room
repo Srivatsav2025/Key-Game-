@@ -1,32 +1,19 @@
 import java.util.ArrayList;
-import java.awt.Graphics;
 
 public abstract class Room {
-    protected ArrayList<GameObject> objects;
-    protected Player player;
-
-    public Room(Player player){
-        this.player = player;
-        objects = new ArrayList<GameObject>();
-        loadRoomObjects();
-    }
-
-    protected abstract void loadRoomObjects();
+    
+    private ArrayList<GameObject> objects;
+    private Key key;
 
     public abstract void update();
-
-    public void render(Graphics g){
-        for(GameObject obj : objects){
-            obj.render(g);
-        }
-        player.render(g);
-    }
 
     public ArrayList<GameObject> getObjects(){
         return objects;
     }
-
-    public Player getPlayer(){
-        return player;
+    public Key getKey(){
+        return key;
+    }
+    public GameObject removeKey(){
+        return objects.remove(0);
     }
 }
