@@ -2,11 +2,6 @@ import javax.swing.JLabel;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-
-public abstract class import javax.swing.JLabel;
-
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public abstract class GameObject extends JLabel{
@@ -39,10 +34,16 @@ public abstract class GameObject extends JLabel{
         // TODO implement collision detection here
        
         return this.getBounds().intersects(other.getBounds());
-    }
+
+}
 public boolean isNear(GameObject other, int interactionDistance){
-    int dx = this.getX() - other.getX();
-    int dy = this.getY() - other.getY();
+
+    int playerCenterX = this.getX() + this.getWidth()/2;
+    int playerCenterY = this.getY() + this.getHeight()/2;
+    int objectCenterX = other.getX() + other.getWidth()/2;
+    int objectCenterY = other.getX() + other.getHeight()/2;
+    int dx = playerCenterX - objectCenterX;
+    int dy = playerCenterY - objectCenterY;
     double distance = Math.sqrt(dx*dx + dy*dy);
 
     return distance <= interactionDistance;
@@ -57,13 +58,6 @@ public boolean getVisibility(){
 public boolean getSolid(){
     return isSolid;
 }
-
-
-
-    
-}
-        
-   
 
 
 
