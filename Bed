@@ -1,0 +1,34 @@
+import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
+
+public class Bed extends GameObject {
+    
+    private boolean isInteractable;
+    private boolean isSolid = true;
+    private boolean isVisible;
+    private Bedroom room;
+    
+
+    public Bed(int x, int y, boolean isInteractable, Bedroom room){
+        super(x,y,isInteractable, true);
+        isSolid = true;
+        this.setSize(400,400);
+        this.setIcon(new ImageIcon("./sprite images/bed.png"));
+        this.room = room;
+    }
+
+    @Override
+    public void update(ArrayList<GameObject> objects) {
+        
+    }
+
+    @Override
+    public void interact() {
+        room.getKey().updateVisibility();
+    }
+    public boolean getSolid(){
+        return isSolid;
+    }
+}
+
