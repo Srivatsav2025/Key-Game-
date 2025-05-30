@@ -1,0 +1,46 @@
+import java.util.ArrayList;
+
+public class Desert extends Room{
+    private Key bedroomKey;
+    private Door bedroomDoor;
+    private ArrayList<GameObject> objects;
+    private Player player;
+   
+
+    public Desert(Player player){
+        this.player = player;
+        bedroomKey = new Key(300,300,player);
+        bedroomDoor = new Door(400,100, bedroomKey, player);
+        
+
+        objects = new ArrayList<GameObject>();
+        objects.add(bedroomKey);
+        objects.add(bedroomDoor);
+       
+    }
+
+    
+    public void update(){
+        if(objects.size() > 0){
+            for(GameObject obj : objects){
+                obj.update(objects);
+            }
+        }
+      
+    }
+    public ArrayList<GameObject> getObjects(){
+        return objects;
+    }
+
+   
+    public Key getKey(){
+        return bedroomKey;
+    }
+    public Door getDoor(){
+        return bedroomDoor;
+    }
+    public GameObject removeKey(){
+        objects.remove(bedroomKey);
+        return bedroomKey;
+    }
+}
