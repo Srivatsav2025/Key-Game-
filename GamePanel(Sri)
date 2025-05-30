@@ -28,12 +28,16 @@ public class GamePanel extends JPanel implements ActionListener  {
     private Axe axe;
     private Wood wood;
     private Rope rope;
-    public int count = 0;
+    public int countTree = 0;
+    public int countFish = 0;
     public boolean woodIsAvailable = false;
+    public boolean fishingRodIsAvailable = false;
     private FishingRod rod; 
+    private Key key;
     
     
     private ArrayList<GameObject> gameObjects;
+
 
     /**
      * Construct a game panel and initialize the game
@@ -47,12 +51,9 @@ public class GamePanel extends JPanel implements ActionListener  {
         rope = new Rope(850, 70, 20, 20);
         rod = new FishingRod(850, 70, 20, 20);
        
-        
-        gameObjects.add(new Tree(70,70,40,40));
+        gameObjects.add(new Tree(150,170,40,40));
         gameObjects.add(new Tree(500,500,40,40));
         gameObjects.add(new Tree(670,500,40,40));
-        //gameObjects.add(new Tree(400,590,40,40));
-        
 
         gameObjects.add(new Water(0,270,520,120));
         gameObjects.add(new Water(800,270,520,220));
@@ -62,12 +63,17 @@ public class GamePanel extends JPanel implements ActionListener  {
         gameObjects.add(new Water(930,500,120 ,100));
         gameObjects.add(new Water(570,220 ,380 ,150));
 
-        //gameObjects.add(new Fish(ALLBITS, ABORT, WIDTH, HEIGHT))
+        gameObjects.add(new Fish(200, 450, 20,20));
+        gameObjects.add(new Fish(230, 450, 20, 20));
+        gameObjects.add(new Fish(350, 400, 20, 20));
+        gameObjects.add(new Fish(400, 400, 20, 20));
+        gameObjects.add(new Fish(300, 400, 20, 20));
 
         gameObjects.add(new Castle(900, 70, 150, 150));
-        //gameObjects.add(new Axe(700, 600, 20, 20));
         gameObjects.add(new Grill(200, 500, 40, 40));
-        //gameObjects.add(new Wood(player.getX(),player.getY()+30, 100, 20));
+
+       
+        
         gameObjects.add(axe);
         gameObjects.add(tree);
         gameObjects.add(rope);
@@ -168,6 +174,7 @@ public class GamePanel extends JPanel implements ActionListener  {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), this);
+
         
     }
      
@@ -192,14 +199,20 @@ public class GamePanel extends JPanel implements ActionListener  {
             repaint(bounds);
         } 
         if(woodIsAvailable && rope.getX() == player.getX() && rope.getY() == player.getY()){
-                System.out.println("gotcha");
                 remove(wood);
                 remove(rope);
                 gameObjects.remove(wood);
                 gameObjects.remove(rope);
                 gameObjects.add(rod);
                 add(rod);
+                fishingRodIsAvailable = true;
         }  
+        if(countFish == 5){
+            key = new Key(500, 500, 100, 100);
+            this.add(key);
+            System.out.println("key");
+            
+        }
     }
     public void treeRemove(GameObject other){
             double distanceX = other.getX() - axe.getX();
@@ -209,10 +222,9 @@ public class GamePanel extends JPanel implements ActionListener  {
                 if(axe.getX() - 25 == player.getX()  && player.getY() == axe.getY() - 10 && distance < 20){
                     remove(other);
                     gameObjects.remove(other);
-                    count++;        
-                    System.out.println(count);
+                    countTree++;        
                 }
-                if(count == 4){
+                if(countTree == 4){
                     remove(axe);
                     wood = new Wood(player.getX()+50,player.getY()+30, 100, 20);
                     gameObjects.add(wood);
@@ -220,19 +232,27 @@ public class GamePanel extends JPanel implements ActionListener  {
                     woodIsAvailable = true;
                 } 
             }
-        
-            System.out.println("rod");
+            double distanceX2 = other.getX() - rod.getX();
+            double distanceY2 = other.getY() - rod.getY();
+            double distance2 = Math.sqrt(Math.abs((distanceX2*distanceX2) - (distanceY2*distanceY2)));
+            if(other instanceof Fish ){
+                if(fishingRodIsAvailable && distance2 < 60){
+                    //other.setLocation(player.getX(), player.getY());
+                    other.setLocation(200,500);
+                    countFish++; 
+                    
+                }
+            }
             
-    }
-    
-    public void spacePressed(GameObject obj){
-        System.out.println("pressed");
-        
+            
     }
    
 }
 
    
    
+
+
+
 
 
