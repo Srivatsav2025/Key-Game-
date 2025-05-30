@@ -32,7 +32,7 @@ public class GamePanel extends JPanel implements ActionListener {
         this.setLayout(null);
         player = new Player(100, 100);
         currentRoom = new Bedroom(player);
-        URL imageURL = getClass().getResource("./background/gray_tile_background.png");
+        URL imageURL = getClass().getResource("./background/wooden_tile_background.png");
 
         try {
             background = ImageIO.read(imageURL);
@@ -115,7 +115,7 @@ public class GamePanel extends JPanel implements ActionListener {
                         break;
                     case KeyEvent.VK_SPACE:
                         for(GameObject obj : currentRoom.getObjects()){
-                            if(player.isNear(obj,75) && obj.getInteractable()){
+                            if(player.isNear(obj,100) && obj.getInteractable()){
                                 spacePressed(obj);
                             }
                         }
