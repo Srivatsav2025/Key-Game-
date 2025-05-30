@@ -41,7 +41,7 @@ public boolean isNear(GameObject other, int interactionDistance){
     int playerCenterX = this.getX() + this.getWidth()/2;
     int playerCenterY = this.getY() + this.getHeight()/2;
     int objectCenterX = other.getX() + other.getWidth()/2;
-    int objectCenterY = other.getX() + other.getHeight()/2;
+    int objectCenterY = other.getY() + other.getHeight()/2;
     int dx = playerCenterX - objectCenterX;
     int dy = playerCenterY - objectCenterY;
     double distance = Math.sqrt(dx*dx + dy*dy);
